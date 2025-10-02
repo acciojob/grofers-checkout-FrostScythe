@@ -1,35 +1,27 @@
-const getSumBtn = document.createElement("button");
-getSumBtn.append("Get Total Price");
-document.body.appendChild(getSumBtn);
+const getSumBtn = document.getElementById("calculateBtn");
 
-const getSum = () => {
-  // Select all price cells
-  const priceCells = document.querySelectorAll(".price");
+getSumBtn.addEventListener("click", () => {
+  const prices = document.querySelectorAll(".price");
   let total = 0;
 
-  // Sum all prices
-  priceCells.forEach(cell => {
+  prices.forEach(cell => {
     total += parseFloat(cell.textContent);
   });
 
-  // Create new row for total
-  const table = document.querySelector("table");
-  const totalRow = document.createElement("tr");
-  const totalCell = document.createElement("td");
+  // Remove old total row if exists
+  const oldAns = document.getElementById("ans");
+  if (oldAns) oldAns.remove();
 
-  totalCell.setAttribute("colspan", "2");
+  // Create a new row for total
+  const table = document.querySelector("table tbody");
+  const totalRow = document.createElement("tr");
+  totalRow.id = "ans"; // Important for test
+
+  const totalCell = document.createElement("td");
+  totalCell.setAttribute("colspan", 2);
   totalCell.style.fontWeight = "bold";
-  totalCell.textContent = "Total Price: " + total;
+  totalCell.textContent = total;
 
   totalRow.appendChild(totalCell);
-
-  // ✅ To prevent adding multiple total rows on repeated clicks,
-  // remove any existing total row first
-  const oldTotal = document.getElementById("total-row");
-  if (oldTotal) oldTotal.remove();
-
-  totalRow.id = "total-row";
   table.appendChild(totalRow);
-};
-
-getSumBtn.addEventListener("click", getSum);
+});
